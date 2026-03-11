@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Ristourne 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --gold:#C9A84C; --gold-light:#F0D080;
+      --dark:#1A1410; --warm:#2E2218;
+      --cream:#FDF6E3; --soft:#F5EDD6; --accent:#8B3A2A;
+      --green:#2e7d46; --green-bg:#e8f5eb; --green-border:#81c784;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+    html,body{min-height:100%;background:var(--dark);}
+    body{font-family:'DM Sans',sans-serif;color:var(--dark);padding:0;}
+
+    /* ── TOP NAV ── */
+    .topnav{
+      background:var(--dark);
+      display:flex;
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+      border-bottom:2px solid var(--gold);
+      position:sticky;top:0;z-index:100;
+    }
+    .topnav::-webkit-scrollbar{display:none;}
+    .tnav-btn{
+      flex:0 0 auto;
+      padding:12px 16px 10px;
+      font-family:'DM Sans',sans-serif;
+      font-size:.72rem;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.4);
+      background:none;
+      border:none;
+      border-bottom:3px solid transparent;
+      cursor:pointer;
+      white-space:nowrap;
+      transition:all .2s;
+      position:relative;
+    }
+    .tnav-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+    .tnav-btn .nbadge{
+      display:none;
+      position:absolute;top:6px;right:6px;
+      background:var(--green);color:#fff;
+      border-radius:50%;width:14px;height:14px;
+      font-size:.55rem;line-height:14px;text-align:center;
+    }
+    .tnav-btn .nbadge.show{display:block;}
+    .tnav-btn .nprog{font-size:.6rem;color:rgba(255,255,255,.3);display:block;margin-top:1px;}
+    .tnav-btn.active .nprog{color:var(--gold-light);}
+
+    /* ── PAGE WRAPPER ── */
+    .page{background:var(--cream);min-height:100vh;}
+    .tab{display:none;}
+    .tab.active{display:block;}
+
+    /* ── HEADERS ── */
+    .hdr{background:var(--dark);padding:20px 18px 16px;text-align:center;}
+    .hdr-line{width:40px;height:2px;background:var(--gold);margin:0 auto 10px;}
+    .hdr h1{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:var(--cream);line-height:1.1;}
+    .hdr h1 span{color:var(--gold);}
+    .hdr-sub{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-light);margin-top:6px;}
+    .hdr-line-b{width:70px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:10px auto 0;}
+
+    .mhdr{background:var(--dark);padding:18px 18px 14px;text-align:center;}
+    .mhdr-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:var(--cream);}
+    .mhdr-title span{color:var(--gold);}
+    .mhdr-sub{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-light);margin-top:5px;}
+    .benef-badge{display:inline-block;margin-top:9px;background:var(--gold);color:var(--dark);border-radius:20px;padding:4px 16px;font-size:.75rem;font-weight:700;}
+
+    /* ── BODY ── */
+    .body{padding:18px 16px 30px;}
+
+    .info-box{background:var(--soft);border-left:4px solid var(--gold);padding:12px 14px;margin-bottom:16px;border-radius:0 6px 6px 0;font-size:.82rem;line-height:1.75;color:var(--warm);}
+    .info-box strong{color:var(--accent);}
+
+    .amounts-row{display:flex;gap:8px;margin-bottom:18px;}
+    .acard{flex:1;border:1.5px solid var(--gold);border-radius:8px;padding:12px 8px;text-align:center;background:#fffdf7;}
+    .acard .lbl{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:#999;margin-bottom:3px;}
+    .acard .val{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:var(--accent);}
+    .acard.big{background:var(--dark);}
+    .acard.big .lbl{color:var(--gold-light);}
+    .acard.big .val{color:var(--gold);font-size:1.3rem;}
+
+    .divider{width:100%;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:16px 0;}
+
+    .sec-title{font-family:'Playfair Display',serif;font-size:.92rem;font-weight:700;letter-spacing:.05em;color:var(--dark);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+    .sec-title::after{content:'';flex:1;height:1px;background:var(--gold);opacity:.4;}
+
+    /* TABLE */
+    .tbl{width:100%;border-collapse:collapse;margin-bottom:8px;font-size:.8rem;}
+    .tbl thead tr{background:var(--dark);}
+    .tbl thead th{padding:8px 10px;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-light);font-weight:400;text-align:left;}
+    .tbl tbody tr{border-bottom:1px solid #f0e8d5;}
+    .tbl tbody tr.hl{background:linear-gradient(to right,#fff8e6,#fffdf5);}
+    .tbl tbody td{padding:10px 10px;vertical-align:middle;}
+    .obadge{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:.67rem;font-weight:700;background:var(--dark);color:var(--gold);margin-right:4px;}
+    .obadge.a{background:var(--gold);color:var(--dark);}
+    .mpill{display:inline-block;background:var(--soft);border:1px solid var(--gold);color:var(--warm);border-radius:20px;padding:2px 8px;font-size:.68rem;}
+    .spill{display:inline-block;border-radius:20px;padding:2px 8px;font-size:.65rem;font-weight:600;text-transform:uppercase;}
+    .spill.cur{background:#fff0d0;color:#9a6800;border:1px solid var(--gold);}
+    .spill.pen{background:#f5f5f5;color:#999;border:1px solid #e0e0e0;}
+
+    .note{background:var(--soft);border-radius:6px;padding:12px 14px;font-size:.76rem;color:#777;line-height:1.65;margin-top:14px;}
+    .note strong{color:var(--accent);}
+
+    .engagement{border:1.5px solid var(--gold);border-radius:8px;padding:13px 15px;background:#fffdf7;font-size:.79rem;color:var(--warm);line-height:1.75;margin-top:16px;}
+    .engagement strong{color:var(--accent);}
+
+    /* REVERSEMENT INFO */
+    .rev-info{background:var(--dark);border-radius:10px;padding:14px 16px;margin-bottom:18px;display:flex;gap:0;justify-content:space-around;align-items:center;}
+    .ri-block{text-align:center;flex:1;}
+    .ri-lbl{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-light);margin-bottom:3px;}
+    .ri-val{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:var(--gold);}
+    .ri-sep{width:1px;height:36px;background:rgba(201,168,76,.3);}
+
+    /* PROGRESS BAR */
+    .progress-wrap{margin:18px 0 6px;}
+    .progress-label{display:flex;justify-content:space-between;font-size:.72rem;color:#999;margin-bottom:6px;}
+    .progress-label span{color:var(--accent);font-weight:600;}
+    .progress-bar-bg{background:#e8e0ce;border-radius:10px;height:8px;overflow:hidden;}
+    .progress-bar-fill{height:100%;background:linear-gradient(to right,var(--gold),var(--accent));border-radius:10px;transition:width .5s ease;width:0%;}
+
+    /* ── SIGNATURE CARDS ── */
+    .sig-list{display:flex;flex-direction:column;gap:16px;margin-top:16px;}
+
+    .sig-card{
+      background:#fff;
+      border:1.5px solid #e2d8c0;
+      border-radius:12px;
+      overflow:hidden;
+      transition:border-color .3s,box-shadow .3s;
+    }
+    .sig-card.signed{border-color:var(--green-border);box-shadow:0 2px 12px rgba(46,125,70,.1);}
+
+    .sig-card-header{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:12px 14px;
+      background:#fdfaf3;
+      border-bottom:1px solid #f0e8d5;
+    }
+    .sig-card.signed .sig-card-header{background:var(--green-bg);}
+
+    .sig-card-info{display:flex;align-items:center;gap:10px;}
+    .sig-num{
+      width:32px;height:32px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Playfair Display',serif;font-size:.9rem;font-weight:900;
+      background:var(--dark);color:var(--gold);
+      flex-shrink:0;
+    }
+    .sig-card.signed .sig-num{background:var(--green);color:#fff;}
+    .sig-card-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--dark);}
+    .sig-card-role{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-top:1px;}
+    .sig-card.signed .sig-card-role{color:var(--green);}
+
+    .sig-status-badge{
+      font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+      padding:3px 10px;border-radius:20px;
+      background:#f5f5f5;color:#aaa;border:1px solid #e0e0e0;
+      white-space:nowrap;
+    }
+    .sig-card.signed .sig-status-badge{background:var(--green-bg);color:var(--green);border-color:var(--green-border);}
+
+    /* Canvas area */
+    .sig-canvas-area{padding:10px 12px 0;}
+    .canvas-wrap{
+      position:relative;background:#fafafa;
+      border:1.5px dashed #d4c8a8;border-radius:8px;
+      overflow:hidden;
+    }
+    .canvas-wrap canvas{display:block;width:100%;height:110px;touch-action:none;cursor:crosshair;}
+    .canvas-ph{
+      position:absolute;inset:0;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;gap:4px;
+      pointer-events:none;transition:opacity .25s;
+    }
+    .canvas-ph .ph-icon{font-size:1.6rem;opacity:.3;}
+    .canvas-ph .ph-txt{font-size:.7rem;color:#ccc;letter-spacing:.12em;text-transform:uppercase;}
+    .canvas-ph.hidden{opacity:0;}
+
+    .signed-ov{
+      display:none;position:absolute;inset:0;
+      background:rgba(232,245,235,.92);
+      align-items:center;justify-content:center;flex-direction:column;gap:4px;
+    }
+    .signed-ov.show{display:flex;}
+    .signed-ov .ov-icon{font-size:2rem;}
+    .signed-ov .ov-txt{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-weight:700;}
+    .signed-ov .ov-date{font-size:.65rem;color:#888;}
+
+    /* Actions */
+    .sig-actions{display:flex;align-items:center;justify-content:space-between;padding:8px 12px 4px;}
+    .sig-date-txt{font-size:.68rem;color:#bbb;}
+    .sig-date-txt b{color:var(--warm);font-weight:600;}
+    .btn-clear{
+      background:none;border:1px solid #e0d8c0;border-radius:20px;
+      padding:3px 12px;font-size:.65rem;color:#bbb;cursor:pointer;
+      font-family:'DM Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;
+      transition:all .2s;
+    }
+    .btn-clear:active{border-color:var(--accent);color:var(--accent);}
+
+    .save-btn{
+      display:block;width:calc(100% - 24px);margin:8px 12px 12px;
+      background:var(--dark);color:var(--gold);
+      border:1.5px solid var(--gold);border-radius:10px;
+      padding:11px;font-family:'DM Sans',sans-serif;
+      font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;
+      cursor:pointer;transition:all .2s;font-weight:600;
+    }
+    .save-btn:active{background:var(--gold);color:var(--dark);}
+    .save-btn:disabled{opacity:.3;cursor:not-allowed;}
+
+    .msg{text-align:center;font-size:.73rem;padding:0 12px 10px;min-height:18px;}
+
+    /* ALL SIGNED BANNER */
+    .all-banner{
+      display:none;background:var(--green);color:#fff;
+      border-radius:10px;padding:14px 16px;text-align:center;
+      margin-top:20px;font-size:.85rem;font-weight:600;
+      letter-spacing:.04em;line-height:1.5;
+    }
+    .all-banner.show{display:block;}
+
+    /* FOOTER */
+    .footer{background:var(--dark);padding:12px 18px;text-align:center;margin-top:30px;}
+    .footer p{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.25);}
+    .footer span{color:var(--gold);}
+  </style>
+</head>
+<body>
+
+<!-- TOP NAVIGATION -->
+<div class="topnav">
+  <button class="tnav-btn active" onclick="showTab('engagement')" id="nav-engagement">
+    📋 Engagement
+    <span class="nprog" id="prog-engagement">0/4</span>
+    <div class="nbadge" id="navbadge-engagement">✓</div>
+  </button>
+  <button class="tnav-btn" onclick="showTab('mars')" id="nav-mars">
+    🌸 Mars
+    <span class="nprog" id="prog-mars">0/4</span>
+    <div class="nbadge" id="navbadge-mars">✓</div>
+  </button>
+  <button class="tnav-btn" onclick="showTab('avril')" id="nav-avril">
+    ☀️ Avril
+    <span class="nprog" id="prog-avril">0/4</span>
+    <div class="nbadge" id="navbadge-avril">✓</div>
+  </button>
+  <button class="tnav-btn" onclick="showTab('mai')" id="nav-mai">
+    🌿 Mai
+    <span class="nprog" id="prog-mai">0/4</span>
+    <div class="nbadge" id="navbadge-mai">✓</div>
+  </button>
+  <button class="tnav-btn" onclick="showTab('juin')" id="nav-juin">
+    🌞 Juin
+    <span class="nprog" id="prog-juin">0/4</span>
+    <div class="nbadge" id="navbadge-juin">✓</div>
+  </button>
+</div>
+
+<div class="page">
+
+  <!-- ═══════════════════════════
+       ENGAGEMENT
+  ═══════════════════════════ -->
+  <div class="tab active" id="tab-engagement">
+    <div class="hdr">
+      <div class="hdr-line"></div>
+      <h1>DOCUMENT DE <span>RISTOURNE</span></h1>
+      <p class="hdr-sub">Accord d'engagement — Groupe des 4</p>
+      <div class="hdr-line-b"></div>
+    </div>
+    <div class="body">
+      <div class="info-box">
+        <strong>Période :</strong> Mars → Juin 2026 &nbsp;|&nbsp; <strong>4 membres</strong><br/>
+        Cotisation : <strong>50 000 FCFA/personne/mois</strong><br/>
+        Cagnotte : <strong>200 000 FCFA/mois</strong>
+      </div>
+      <div class="amounts-row">
+        <div class="acard"><div class="lbl">Par personne</div><div class="val">50 000 F</div></div>
+        <div class="acard"><div class="lbl">Membres</div><div class="val">4</div></div>
+        <div class="acard big"><div class="lbl">Cagnotte</div><div class="val">200 000 F</div></div>
+      </div>
+      <div class="divider"></div>
+      <p class="sec-title">Ordre de passage</p>
+      <table class="tbl">
+        <thead><tr><th>#</th><th>Membre</th><th>Mois</th><th>Tour</th></tr></thead>
+        <tbody>
+          <tr class="hl"><td><span class="obadge a">1</span></td><td><strong>Carin</strong></td><td><span class="mpill">Mars</span></td><td><span class="spill cur">1ère</span></td></tr>
+          <tr><td><span class="obadge">2</span></td><td>Davi</td><td><span class="mpill">Avril</span></td><td><span class="spill pen">2ème</span></td></tr>
+          <tr><td><span class="obadge">3</span></td><td>Christelle</td><td><span class="mpill">Mai</span></td><td><span class="spill pen">3ème</span></td></tr>
+          <tr><td><span class="obadge">4</span></td><td>Sandra</td><td><span class="mpill">Juin</span></td><td><span class="spill pen">4ème</span></td></tr>
+        </tbody>
+      </table>
+      <div class="note">📌 <strong>Règles :</strong> Cotisation avant le 25 de chaque mois. Signature obligatoire à chaque reversement.</div>
+      <div class="engagement">
+        <strong>Engagement :</strong> Nous nous engageons à cotiser <strong>50 000 FCFA</strong> chaque mois et à respecter l'ordre de distribution. Ce document vaut accord entre toutes les parties.
+      </div>
+      <div class="divider"></div>
+      <p class="sec-title">Signatures d'engagement</p>
+      <div class="progress-wrap">
+        <div class="progress-label"><span id="plabel-engagement">0 membre(s) ont signé</span><span id="pcount-engagement">0 / 4</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="pbar-engagement"></div></div>
+      </div>
+      <div class="sig-list" id="grid-engagement"></div>
+      <div class="all-banner" id="banner-engagement">🎉 Tous les membres ont signé l'engagement !<br/><small style="font-weight:400;font-size:.78rem;">Passez maintenant aux onglets mensuels.</small></div>
+    </div>
+    <div class="footer"><p>Ristourne <span>Mars–Juin 2026</span> — Groupe des 4 — Confidentiel</p></div>
+  </div>
+
+  <!-- ═══════════════════════════
+       MARS
+  ═══════════════════════════ -->
+  <div class="tab" id="tab-mars">
+    <div class="mhdr">
+      <div class="mhdr-title">Reversement <span>Mars 2026</span></div>
+      <div class="mhdr-sub">Confirmation de reversement</div>
+      <div class="benef-badge">🏆 Bénéficiaire : Carin</div>
+    </div>
+    <div class="body">
+      <div class="rev-info">
+        <div class="ri-block"><div class="ri-lbl">Mois</div><div class="ri-val">Mars</div></div>
+        <div class="ri-sep"></div>
+        <div class="ri-block"><div class="ri-lbl">Bénéficiaire</div><div class="ri-val">Carin</div></div>
+        <div class="ri-sep"></div>
+        <div class="ri-block"><div class="ri-lbl">Montant</div><div class="ri-val">200 000 F</div></div>
+      </div>
+      <div class="engagement">
+        <strong>Attestation :</strong> Nous certifions que <strong>200 000 FCFA</strong> ont bien été remis à <strong>Carin</strong> fin Mars 2026.
+      </div>
+      <div class="divider"></div>
+      <p class="sec-title">Signatures — Mars</p>
+      <div class="progress-wrap">
+        <div class="progress-label"><span id="plabel-mars">0 membre(s) ont signé</span><span id="pcount-mars">0 / 4</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="pbar-mars"></div></div>
+      </div>
+      <div class="sig-list" id="grid-mars"></div>
+      <div class="all-banner" id="banner-mars">✅ Reversement Mars 2026 confirmé par tous !</div>
+    </div>
+    <div class="footer"><p>Reversement <span>Mars 2026</span> — Ristourne Groupe des 4</p></div>
+  </div>
+
+  <!-- ═══════════════════════════
+       AVRIL
+  ═══════════════════════════ -->
+  <div class="tab" id="tab-avril">
+    <div class="mhdr">
+      <div class="mhdr-title">Reversement <span>Avril 2026</span></div>
+      <div class="mhdr-sub">Confirmation de reversement</div>
+      <div class="benef-badge">🏆 Bénéficiaire : Davi</div>
+    </div>
+    <div class="body">
+      <div class="rev-info">
+        <div class="ri-block"><div class="ri-lbl">Mois</div><div class="ri-val">Avril</div></div>
+        <div class="ri-sep"></div>
+        <div class="ri-block"><div class="ri-lbl">Bénéficiaire</div><div class="ri-val">Davi</div></div>
+        <div class="ri-sep"></div>
+        <div class="ri-block"><div class="ri-lbl">Montant</div><div class="ri-val">200 000 F</div></div>
+      </div>
+      <div class="engagement">
+        <strong>Attestation :</strong> Nous certifions que <strong>200 000 FCFA</strong> ont bien été remis à <strong>Davi</strong> fin Avril 2026.
+      </div>
+      <div class="divider"></div>
+      <p class="sec-title">Signatures — Avril</p>
+      <div class="progress-wrap">
+        <div class="progress-label"><span id="plabel-avril">0 membre(s) ont signé</span><span id="pcount-avril">0 / 4</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="pbar-avril"></div></div>
+      </div>
+      <div class="sig-list" id="grid-avril"></div>
+      <div class="all-banner" id="banner-avril">✅ Reversement Avril 2026 confirmé par tous !</div>
+    </div>
+    <div class="footer"><p>Reversement <span>Avril 2026</span> — Ristourne Groupe des 4</p></div>
+  </div>
+
+  <!-- ═══════════════════════════
+       MAI
+  ═══════════════════════════ -->
+  <div class="tab" id="tab-mai">
+    <div class="mhdr">
+      <div class="mhdr-title">Reversement <span>Mai 2026</span></div>
+      <div class="mhdr-sub">Confirmation de reversement</div>
+      <div class="benef-badge">🏆 Bénéficiaire : Christelle</div>
+    </div>
+    <div class="body">
+      <div class="rev-info">
+        <div class="ri-block"><div class="ri-lbl">Mois</div><div class="ri-val">Mai</div></div>
+        <div class="ri-sep"></div>
+        <div class="ri-block"><div class="ri-lbl">Bénéficiaire</div><div class="ri-val">Christelle</div></div>
+        <div class="ri-sep"></div>
+        <div class="ri-block"><div class="ri-lbl">Montant</div><div class="ri-val">200 000 F</div></div>
+      </div>
+      <div class="engagement">
+        <strong>Attestation :</strong> Nous certifions que <strong>200 000 FCFA</strong> ont bien été remis à <strong>Christelle</strong> fin Mai 2026.
+      </div>
+      <div class="divider"></div>
+      <p class="sec-title">Signatures — Mai</p>
+      <div class="progress-wrap">
+        <div class="progress-label"><span id="plabel-mai">0 membre(s) ont signé</span><span id="pcount-mai">0 / 4</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="pbar-mai"></div></div>
+      </div>
+      <div class="sig-list" id="grid-mai"></div>
+      <div class="all-banner" id="banner-mai">✅ Reversement Mai 2026 confirmé par tous !</div>
+    </div>
+    <div class="footer"><p>Reversement <span>Mai 2026</span> — Ristourne Groupe des 4</p></div>
+  </div>
+
+  <!-- ═══════════════════════════
+       JUIN
+  ═══════════════════════════ -->
+  <div class="tab" id="tab-juin">
+    <div class="mhdr">
+      <div class="mhdr-title">Reversement <span>Juin 2026</span></div>
+      <div class="mhdr-sub">Confirmation de reversement</div>
+      <div class="benef-badge">🏆 Bénéficiaire : Sandra</div>
+    </div>
+    <div class="body">
+      <div class="rev-info">
+        <div class="ri-block"><div class="ri-lbl">Mois</div><div class="ri-val">Juin</div></div>
+        <div class="ri-sep"></div>
+        <div class="ri-block"><div class="ri-lbl">Bénéficiaire</div><div class="ri-val">Sandra</div></div>
+        <div class="ri-sep"></div>
+        <div class="ri-block"><div class="ri-lbl">Montant</div><div class="ri-val">200 000 F</div></div>
+      </div>
+      <div class="engagement">
+        <strong>Attestation :</strong> Nous certifions que <strong>200 000 FCFA</strong> ont bien été remis à <strong>Sandra</strong> fin Juin 2026.
+      </div>
+      <div class="divider"></div>
+      <p class="sec-title">Signatures — Juin</p>
+      <div class="progress-wrap">
+        <div class="progress-label"><span id="plabel-juin">0 membre(s) ont signé</span><span id="pcount-juin">0 / 4</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="pbar-juin"></div></div>
+      </div>
+      <div class="sig-list" id="grid-juin"></div>
+      <div class="all-banner" id="banner-juin">✅ Reversement Juin 2026 confirmé par tous !</div>
+    </div>
+    <div class="footer"><p>Reversement <span>Juin 2026</span> — Ristourne Groupe des 4</p></div>
+  </div>
+
+</div><!-- .page -->
+
+<script>
+const MEMBERS = ['carin','davi','christelle','sandra'];
+const LABELS  = {carin:'Carin',davi:'Davi',christelle:'Christelle',sandra:'Sandra'};
+const TABS    = ['engagement','mars','avril','mai','juin'];
+const ROLES   = {
+  engagement:{carin:'Membre · 1ère bénéficiaire',davi:'Membre · 2ème bénéficiaire',christelle:'Membre · 3ème bénéficiaire',sandra:'Membre · 4ème bénéficiaire'},
+  mars:      {carin:'🏆 Bénéficiaire ce mois',davi:'Cotisante',christelle:'Cotisante',sandra:'Cotisante'},
+  avril:     {carin:'Cotisante',davi:'🏆 Bénéficiaire ce mois',christelle:'Cotisante',sandra:'Cotisante'},
+  mai:       {carin:'Cotisante',davi:'Cotisante',christelle:'🏆 Bénéficiaire ce mois',sandra:'Cotisante'},
+  juin:      {carin:'Cotisante',davi:'Cotisante',christelle:'Cotisante',sandra:'🏆 Bénéficiaire ce mois'},
+};
+
+// local storage key
+const STORE_KEY = 'ristourne2026';
+let allData = loadData();
+
+function loadData() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+  catch(e) { return {}; }
+}
+function saveData() {
+  localStorage.setItem(STORE_KEY, JSON.stringify(allData));
+}
+
+// States for canvases
+const cvStates = {};
+
+// ── BUILD ALL GRIDS ──────────────────────────────────────────
+TABS.forEach(tab => buildGrid(tab));
+
+function buildGrid(tab) {
+  const list = document.getElementById('grid-' + tab);
+  cvStates[tab] = {};
+
+  MEMBERS.forEach((name, i) => {
+    cvStates[tab][name] = {drawing:false, hasSigned:false, ctx:null, canvas:null, ratio:1};
+
+    const card = document.createElement('div');
+    card.className = 'sig-card';
+    card.id = `card-${tab}-${name}`;
+    card.innerHTML = `
+      <div class="sig-card-header">
+        <div class="sig-card-info">
+          <div class="sig-num" id="snum-${tab}-${name}">${i+1}</div>
+          <div>
+            <div class="sig-card-name">${LABELS[name]}</div>
+            <div class="sig-card-role">${ROLES[tab][name]}</div>
+          </div>
+        </div>
+        <div class="sig-status-badge" id="sbadge-${tab}-${name}">Non signé</div>
+      </div>
+      <div class="sig-canvas-area">
+        <div class="canvas-wrap">
+          <canvas id="cv-${tab}-${name}"></canvas>
+          <div class="canvas-ph" id="ph-${tab}-${name}">
+            <div class="ph-icon">✍️</div>
+            <div class="ph-txt">Signer ici</div>
+          </div>
+          <div class="signed-ov" id="ov-${tab}-${name}">
+            <div class="ov-icon">✅</div>
+            <div class="ov-txt">Signé</div>
+            <div class="ov-date" id="ovdate-${tab}-${name}"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sig-actions">
+        <div class="sig-date-txt">Date : <b id="date-${tab}-${name}">—</b></div>
+        <button class="btn-clear" onclick="clearSig('${tab}','${name}')">✕ Effacer</button>
+      </div>
+      <button class="save-btn" id="savebtn-${tab}-${name}" onclick="saveSig('${tab}','${name}')">
+        ✅ Enregistrer ma signature
+      </button>
+      <div class="msg" id="msg-${tab}-${name}"></div>
+    `;
+    list.appendChild(card);
+  });
+
+  // Init canvases after DOM is ready
+  setTimeout(() => {
+    MEMBERS.forEach(name => initCanvas(tab, name));
+    restoreTab(tab);
+  }, 100);
+}
+
+// ── CANVAS ───────────────────────────────────────────────────
+function initCanvas(tab, name) {
+  const canvas = document.getElementById(`cv-${tab}-${name}`);
+  if (!canvas) return;
+  const ratio = window.devicePixelRatio || 1;
+  const w = canvas.parentElement.clientWidth || 300;
+  const h = 110;
+  canvas.width  = w * ratio;
+  canvas.height = h * ratio;
+  canvas.style.width  = w + 'px';
+  canvas.style.height = h + 'px';
+
+  const ctx = canvas.getContext('2d');
+  ctx.scale(ratio, ratio);
+  ctx.strokeStyle = '#1A1410';
+  ctx.lineWidth = 2.2;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  const s = cvStates[tab][name];
+  s.ctx = ctx; s.canvas = canvas; s.ratio = ratio;
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const src  = e.touches ? e.touches[0] : e;
+    const sx   = (canvas.width / ratio) / rect.width;
+    const sy   = (canvas.height / ratio) / rect.height;
+    return { x:(src.clientX-rect.left)*sx, y:(src.clientY-rect.top)*sy };
+  }
+  function start(e) {
+    e.preventDefault();
+    const p = getPos(e);
+    s.drawing = true;
+    ctx.beginPath(); ctx.moveTo(p.x, p.y);
+    if (!s.hasSigned) {
+      s.hasSigned = true;
+      document.getElementById(`ph-${tab}-${name}`).classList.add('hidden');
+      const now = new Date();
+      document.getElementById(`date-${tab}-${name}`).textContent =
+        now.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'});
+    }
+  }
+  function move(e) {
+    if (!s.drawing) return;
+    e.preventDefault();
+    const p = getPos(e);
+    ctx.lineTo(p.x,p.y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(p.x,p.y);
+  }
+  function stop(e) {
+    if (!s.drawing) return;
+    e.preventDefault();
+    s.drawing = false; ctx.beginPath();
+  }
+  canvas.addEventListener('mousedown',  start);
+  canvas.addEventListener('mousemove',  move);
+  canvas.addEventListener('mouseup',    stop);
+  canvas.addEventListener('mouseleave', stop);
+  canvas.addEventListener('touchstart', start, {passive:false});
+  canvas.addEventListener('touchmove',  move,  {passive:false});
+  canvas.addEventListener('touchend',   stop,  {passive:false});
+}
+
+function clearSig(tab, name) {
+  const s = cvStates[tab][name];
+  if (!s.ctx) return;
+  s.ctx.clearRect(0,0,s.canvas.width/s.ratio, s.canvas.height/s.ratio);
+  s.hasSigned = false;
+  document.getElementById(`ph-${tab}-${name}`).classList.remove('hidden');
+  document.getElementById(`date-${tab}-${name}`).textContent = '—';
+  document.getElementById(`ov-${tab}-${name}`).classList.remove('show');
+  document.getElementById(`card-${tab}-${name}`).classList.remove('signed');
+  document.getElementById(`sbadge-${tab}-${name}`).textContent = 'Non signé';
+  document.getElementById(`savebtn-${tab}-${name}`).disabled = false;
+  document.getElementById(`msg-${tab}-${name}`).textContent = '';
+  // Remove from storage
+  if (allData[tab]) { delete allData[tab][name]; saveData(); }
+  updateProgress(tab);
+}
+
+// ── SAVE (local) ─────────────────────────────────────────────
+function saveSig(tab, name) {
+  const s = cvStates[tab][name];
+  if (!s.hasSigned) {
+    showMsg(tab, name, '⚠️ Veuillez signer d\'abord.', '#c0392b'); return;
+  }
+  const btn = document.getElementById(`savebtn-${tab}-${name}`);
+  btn.disabled = true;
+  showMsg(tab, name, '💾 Enregistrement...', 'var(--gold)');
+
+  const imgData = s.canvas.toDataURL('image/png');
+  const dateStr = document.getElementById(`date-${tab}-${name}`).textContent;
+
+  if (!allData[tab]) allData[tab] = {};
+  allData[tab][name] = { img: imgData, date: dateStr, savedAt: new Date().toISOString() };
+  saveData();
+
+  showMsg(tab, name, '✅ Signature enregistrée !', 'var(--green)');
+  markSigned(tab, name, dateStr);
+  updateProgress(tab);
+}
+
+function markSigned(tab, name, date) {
+  document.getElementById(`ov-${tab}-${name}`).classList.add('show');
+  document.getElementById(`ovdate-${tab}-${name}`).textContent = date;
+  document.getElementById(`card-${tab}-${name}`).classList.add('signed');
+  document.getElementById(`sbadge-${tab}-${name}`).textContent = '✓ Signé';
+}
+
+function showMsg(tab, name, txt, color) {
+  const el = document.getElementById(`msg-${tab}-${name}`);
+  el.textContent = txt; el.style.color = color;
+}
+
+// ── PROGRESS ─────────────────────────────────────────────────
+function updateProgress(tab) {
+  const data = allData[tab] || {};
+  const count = MEMBERS.filter(n => data[n]).length;
+  const pct   = (count / 4) * 100;
+
+  document.getElementById(`plabel-${tab}`).textContent = `${count} membre(s) ont signé`;
+  document.getElementById(`pcount-${tab}`).textContent  = `${count} / 4`;
+  document.getElementById(`pbar-${tab}`).style.width    = pct + '%';
+  document.getElementById(`prog-${tab}`).textContent    = `${count}/4`;
+
+  if (count === 4) {
+    document.getElementById('banner-'+tab).classList.add('show');
+    document.getElementById('navbadge-'+tab).classList.add('show');
+  }
+}
+
+// ── RESTORE FROM LOCALSTORAGE ─────────────────────────────────
+function restoreTab(tab) {
+  const data = allData[tab];
+  if (!data) return;
+  MEMBERS.forEach(name => {
+    if (!data[name]) return;
+    const s = cvStates[tab][name];
+    if (!s || !s.ctx) return;
+    const img = new Image();
+    img.onload = () => {
+      s.ctx.clearRect(0,0,s.canvas.width/s.ratio,s.canvas.height/s.ratio);
+      s.ctx.drawImage(img, 0, 0, s.canvas.width/s.ratio, s.canvas.height/s.ratio);
+      s.hasSigned = true;
+      document.getElementById(`ph-${tab}-${name}`).classList.add('hidden');
+      document.getElementById(`date-${tab}-${name}`).textContent = data[name].date;
+      document.getElementById(`savebtn-${tab}-${name}`).disabled = true;
+      showMsg(tab, name, '✅ Signé le ' + data[name].date, 'var(--green)');
+      markSigned(tab, name, data[name].date);
+    };
+    img.src = data[name].img;
+  });
+  setTimeout(() => updateProgress(tab), 200);
+}
+
+// ── TAB SWITCHING ─────────────────────────────────────────────
+function showTab(tab) {
+  TABS.forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+    document.getElementById('nav-'+t).classList.toggle('active', t===tab);
+  });
+  // scroll nav button into view
+  document.getElementById('nav-'+tab).scrollIntoView({inline:'center',behavior:'smooth'});
+  setTimeout(() => {
+    MEMBERS.forEach(name => {
+      const s = cvStates[tab][name];
+      if (s && !s.ctx) initCanvas(tab, name);
+    });
+    restoreTab(tab);
+  }, 80);
+}
+</script>
+</body>
+</html>
